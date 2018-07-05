@@ -1,31 +1,58 @@
-## PyBank
+import os
+import csv
 
-![Revenue](Images/revenue-per-lead.jpg)
+# Files to load (Remember to change these)
+file_to_load = "Resources/budget_data.csv"
 
-* In this challenge, you are tasked with creating a Python script for analyzing the financial records of your company. You will give a set of financial data called [budget_data.csv](PyBank/Resources/budget_data.csv). The dataset is composed of two columns: `Date` and `Profit/Losses`. (Thankfully, your company has rather lax standards for accounting so the records are simple.)
+# Read the csv and convert it into a list of dictionaries
+with open(file_to_load) as revenue_data:
+    reader = csv.reader(revenue_data)
 
-* Your task is to create a Python script that analyzes the records to calculate each of the following:
+    # use of next to skip first title row in csv file
+    next(reader) 
+    revenue = []
+    date = []
+    rev_change = []
 
-  * The total number of months included in the dataset
+    # in this loop I did sum of column 1 which is revenue in csv file and counted total months which is column 0 
+    for row in reader:
+        revenue.append(float(row[1]))
+        date.append(row[0])
 
-  * The total net amount of "Profit/Losses" over the entire period
+    print("Financial Analysis")
+    print("-----------------------------------")
+    print("Total Months:", len(date))
+    print("Total Revenue: $", sum(revenue))
 
-  * The average change in "Profit/Losses" between months over the entire period
 
-  * The greatest increase in profits (date and amount) over the entire period
+    #in this loop I did total of difference between all row of column "Revenue" and found total revnue change. Also found out max revenue change and min revenue change. 
+    for i in range(1,len(revenue)):
+        rev_change.append(revenue[i] - revenue[i-1])   
 
-  * The greatest decrease in losses (date and amount) over the entire period
+        avg_rev_change = sum(rev_change)/len(rev_change)
+        max_rev_change = max(rev_change)
+        min_rev_change = min(rev_change)
 
-* As an example, your analysis should look similar to the one below:
+        max_rev_change_date = str(date[rev_change.index(max(rev_change))])
+        min_rev_change_date = str(date[rev_change.index(min(rev_change))])
 
-  ```text
-  Financial Analysis
-  ----------------------------
-  Total Months: 86
-  Total: $38382578
-  Average  Change: $-2315.12
-  Greatest Increase in Profits: Feb-2012 ($1926159)
-  Greatest Decrease in Profits: Sep-2013 ($-2196167)
-  ```
+    print("Average Revenue Change: $", round(avg_rev_change))
+    print("Greatest Increase in Profits:", max_rev_change_date,"($", max_rev_change,")")
+    print("Greatest Decrease in Profits:", min_rev_change_date,"($", min_rev_change,")")
 
-* In addition, your final script should both print the analysis to the terminal and export a text file with the results.
+    # Zip lists together
+    # cleaned_csv = zip(date, revenue, round(avg_rev_change), max_rev_change, min_rev_change)
+    cleaned_csv = zip(date, revenue)
+
+    # Set variable for output file
+    output_file = os.path.join("budget_final.csv")
+
+    #  Open the output file
+    with open(output_file, "w") as csvfile:
+        writer = csv.writer(csvfile)
+
+        # Write the header row
+        writer.writerow(["Date", "Revenue"])
+
+        # Write in zipped rows
+        writer.writerow(cleaned_csv)
