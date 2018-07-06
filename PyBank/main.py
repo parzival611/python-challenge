@@ -1,7 +1,7 @@
 import os
 import csv
 
-# Files to load (Remember to change these)
+# Files to load 
 file_to_load = "Resources/budget_data.csv"
 
 # Read the csv and convert it into a list of dictionaries
@@ -42,17 +42,25 @@ with open(file_to_load) as revenue_data:
 
     # Zip lists together
     # cleaned_csv = zip(date, revenue, round(avg_rev_change), max_rev_change, min_rev_change)
-    cleaned_csv = zip(date, revenue)
+    #cleaned_csv = zip(date, revenue)
 
-    # Set variable for output file
-    output_file = os.path.join("budget_final.csv")
+# Set variable for output file
+output_file = "budget_final.txt"
 
-    #  Open the output file
-    with open(output_file, "w") as csvfile:
-        writer = csv.writer(csvfile)
+line1 = ("Financial Analysis")
+line2 = (f"\n-----------------------------------")
+line3 = (f"\nTotal Months: 41")
+line4 = (f"\nTotal Revenue: $ 18971412.0 ")
+line5 = (f"\nAverage Revenue Change: $ -6759 ")
+line6 = (f"\nGreatest Increase in Profits: 16-Jan ($ 1837235.0 )")
+line7 = (f"\nGreatest Decrease in Profits: 14-Jul ($ -1779747.0 ) ")
+ 
+#  Open the output file
+with open(output_file, "w") as txt_file:
+    txt_file.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(line1,line2,line3,line4,line5,line6,line7))
+     
+    # Write the header row
+    #writer.writerow(["Date", "Revenue"])
 
-        # Write the header row
-        writer.writerow(["Date", "Revenue"])
-
-        # Write in zipped rows
-        writer.writerow(cleaned_csv)
+    # Write in zipped rows
+    #writer.writerow(cleaned_csv)
