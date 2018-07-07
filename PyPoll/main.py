@@ -24,7 +24,7 @@ with open(file_to_load, 'r', encoding='utf-8-sig') as voting_data:
     list_candidates = [ x ['Candidate'] for x in poll_data ]
     list_candidates = list(set(list_candidates))
     
-    # dict for vote tally including candidate                                                                                                  
+    # dict for vote tally including candidates                                                                                                  
     md = {}
     for candidate in list_candidates:
         md[candidate] = 0
